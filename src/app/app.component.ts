@@ -1,37 +1,96 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {ButtonModule} from 'primeng/button';
-import {HttpClient, HttpClientModule, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs";
+import { ButtonModule } from 'primeng/button';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Observable, interval } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { CardModule } from 'primeng/card';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ButtonModule, HttpClientModule],
+  imports: [RouterOutlet, ButtonModule, HttpClientModule, CardModule, ProgressSpinnerModule, ProgressBarModule, CommonModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  private apiUrl = 'http://192.168.20.47:8000/sleep';
+  private apiUrl = 'http://192.168.20.47:8000/';
+  loadingStates = {
+    sleep: false,
+    turbo: false,
+    modeA: false,
+    modeP: false,
+    start: false,
+    stop: false
+  };
+  pm25: number = 0;
+  iaql: number = 0;
 
-  constructor(private http: HttpClient) {}
-
-  sleep(): Observable<any> {
-
-
-    const body = {};
-
-    return this.http.post(this.apiUrl, body);
+  constructor(private http: HttpClient) {
+    this.fetchStatus();
   }
 
+  // Generic method to make POST requests
+  private postRequest(endpoint: string): Observable<any> {
+    const body = {};
+    return this.http.post(this.apiUrl + endpoint, body);
+  }
+
+  // Trigger methods for each action
   triggerSleep() {
-    this.sleep().subscribe(
+    this.makeApiCall("sleep", 'sleep');
+  }
+
+  triggerTurbo() {
+    this.makeApiCall("turbo", 'turbo');
+  }
+
+  triggerModeA() {
+    this.makeApiCall("mode_a", 'modeA');
+  }
+
+  triggerModeP() {
+    this.makeApiCall("mode_p", 'modeP');
+  }
+
+  triggerStart() {
+    this.makeApiCall("start", 'start');
+  }
+
+  triggerStop() {
+    this.makeApiCall("stop", 'stop');
+  }
+
+  // Helper method to handle API call and response
+  private makeApiCall(endpoint: string, stateKey: keyof typeof this.loadingStates) {
+    this.loadingStates[stateKey] = true;
+    this.postRequest(endpoint).subscribe(
       response => {
-        console.log('POST request successful', response);
+        console.log(`POST request to ${endpoint} successful`, response);
+        this.loadingStates[stateKey] = false;
       },
       error => {
-        console.error('POST request error', error);
+        console.error(`POST request to ${endpoint} error`, error);
+        this.loadingStates[stateKey] = false;
       }
     );
+  }
+
+  // Fetch status every 5 seconds
+  private fetchStatus() {
+    interval(5000)
+      .pipe(switchMap(() => this.http.get<any>(this.apiUrl + 'status')))
+      .subscribe(
+        response => {
+          this.pm25 = response.pm25;
+          this.iaql = response.iaql;
+        },
+        error => {
+          console.error('GET request to /status error', error);
+        }
+      );
   }
 }

@@ -1,9 +1,65 @@
-<p-button label="Click Me"></p-button>
-<div style="text-align:center">
-  <h1>
-    Sleep Component
-  </h1>
-  <button (click)="triggerSleep()">Sleep</button>
+<div class="card-container">
+  <div class="card-row">
+    <p-card (click)="triggerSleep()" class="card-button">
+      <ng-template pTemplate="title">Sleep</ng-template>
+      <ng-container *ngIf="loadingStates.sleep">
+        <p-progressSpinner></p-progressSpinner>
+      </ng-container>
+    </p-card>
+    <p-card (click)="triggerTurbo()" class="card-button">
+      <ng-template pTemplate="title">Turbo</ng-template>
+      <ng-container *ngIf="loadingStates.turbo">
+        <p-progressSpinner></p-progressSpinner>
+      </ng-container>
+    </p-card>
+  </div>
+  <div class="card-row">
+    <p-card (click)="triggerModeA()" class="card-button">
+      <ng-template pTemplate="title">Mode A</ng-template>
+      <ng-container *ngIf="loadingStates.modeA">
+        <p-progressSpinner></p-progressSpinner>
+      </ng-container>
+    </p-card>
+    <p-card (click)="triggerModeP()" class="card-button">
+      <ng-template pTemplate="title">Mode P</ng-template>
+      <ng-container *ngIf="loadingStates.modeP">
+        <p-progressSpinner></p-progressSpinner>
+      </ng-container>
+    </p-card>
+  </div>
+  <div class="card-row">
+    <p-card (click)="triggerStart()" class="card-button">
+      <ng-template pTemplate="title">Start</ng-template>
+      <ng-container *ngIf="loadingStates.start">
+        <p-progressSpinner></p-progressSpinner>
+      </ng-container>
+    </p-card>
+    <p-card (click)="triggerStop()" class="card-button">
+      <ng-template pTemplate="title">Stop</ng-template>
+      <ng-container *ngIf="loadingStates.stop">
+        <p-progressSpinner></p-progressSpinner>
+      </ng-container>
+    </p-card>
+  </div>
+  <div class="card-row">
+    <p-card class="full-width">
+      <ng-template pTemplate="title">Air Quality</ng-template>
+      <div>
+        <div>
+          <span>PM2.5: </span>
+          {{ pm25 }}/500 µg/m³
+        </div>
+        <p-progressBar [value]="pm25 / 5" [showValue]="false"></p-progressBar>
+      </div>
+      <div>
+        <div>
+          <span>Allergene: </span>
+          {{ iaql }}/12
+        </div>
+        <p-progressBar [value]="iaql * (100 / 12)" [showValue]="false"></p-progressBar>
+      </div>
+    </p-card>
+  </div>
 </div>
 
-<router-outlet />
+<router-outlet></router-outlet>
