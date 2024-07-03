@@ -1,0 +1,24 @@
+:host ::ng-deep .p-card-content {
+  padding: 0;
+}
+
+:host ::ng-deep .p-card-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /*height: 3rem; !* Adjust this height as needed *!*/
+}
+
+.card-button {
+  flex: 1;
+  cursor: pointer;
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.card-button:hover {
+  transform: scale(1.05);
+}

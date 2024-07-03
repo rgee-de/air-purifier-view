@@ -1,0 +1,43 @@
+:host ::ng-deep .p-card-content {
+  padding: 0;
+}
+
+:host ::ng-deep .p-progressbar {
+  height: 0.5rem;
+}
+
+
+:host ::ng-deep .p-card-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.value, .max-value {
+  font-weight: bold;
+}
+
+
+.unit, .max-value {
+  font-size: 75%;
+}
+
+.flex {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+.text-right {
+  text-align: right;
+}

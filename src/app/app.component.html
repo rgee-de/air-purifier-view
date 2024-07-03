@@ -1,65 +1,139 @@
-<div class="card-container">
-  <div class="card-row">
-    <p-card (click)="triggerSleep()" class="card-button">
-      <ng-template pTemplate="title">Sleep</ng-template>
-      <ng-container *ngIf="loadingStates.sleep">
-        <p-progressSpinner></p-progressSpinner>
-      </ng-container>
-    </p-card>
-    <p-card (click)="triggerTurbo()" class="card-button">
-      <ng-template pTemplate="title">Turbo</ng-template>
-      <ng-container *ngIf="loadingStates.turbo">
-        <p-progressSpinner></p-progressSpinner>
-      </ng-container>
-    </p-card>
+<div class="grid surface-ground">
+  <div class="col-6">
+    <app-card-button [header]="'Start'" [clickHandler]="triggerStart.bind(this)"></app-card-button>
   </div>
-  <div class="card-row">
-    <p-card (click)="triggerModeA()" class="card-button">
-      <ng-template pTemplate="title">Mode A</ng-template>
-      <ng-container *ngIf="loadingStates.modeA">
-        <p-progressSpinner></p-progressSpinner>
-      </ng-container>
-    </p-card>
-    <p-card (click)="triggerModeP()" class="card-button">
-      <ng-template pTemplate="title">Mode P</ng-template>
-      <ng-container *ngIf="loadingStates.modeP">
-        <p-progressSpinner></p-progressSpinner>
-      </ng-container>
-    </p-card>
+  <div class="col-6">
+    <app-card-button [header]="'Stop'" [clickHandler]="triggerStop.bind(this)"></app-card-button>
   </div>
-  <div class="card-row">
-    <p-card (click)="triggerStart()" class="card-button">
-      <ng-template pTemplate="title">Start</ng-template>
-      <ng-container *ngIf="loadingStates.start">
-        <p-progressSpinner></p-progressSpinner>
-      </ng-container>
-    </p-card>
-    <p-card (click)="triggerStop()" class="card-button">
-      <ng-template pTemplate="title">Stop</ng-template>
-      <ng-container *ngIf="loadingStates.stop">
-        <p-progressSpinner></p-progressSpinner>
-      </ng-container>
-    </p-card>
+
+  <div class="col-6">
+    <app-card-button [header]="'Sleep'" [clickHandler]="triggerSleep.bind(this)"></app-card-button>
   </div>
-  <div class="card-row">
-    <p-card class="full-width">
-      <ng-template pTemplate="title">Air Quality</ng-template>
-      <div>
-        <div>
-          <span>PM2.5: </span>
-          {{ pm25 }}/500 µg/m³
-        </div>
-        <p-progressBar [value]="pm25 / 5" [showValue]="false"></p-progressBar>
-      </div>
-      <div>
-        <div>
-          <span>Allergene: </span>
-          {{ iaql }}/12
-        </div>
-        <p-progressBar [value]="iaql * (100 / 12)" [showValue]="false"></p-progressBar>
-      </div>
-    </p-card>
+  <div class="col-6">
+    <app-card-button [header]="'Turbo'" [clickHandler]="triggerTurbo.bind(this)"></app-card-button>
+  </div>
+  <div class="col-6">
+    <app-card-button [header]="'Mode A'" [clickHandler]="triggerModeA.bind(this)"></app-card-button>
+  </div>
+  <div class="col-6">
+    <app-card-button [header]="'Mode P'" [clickHandler]="triggerModeP.bind(this)"></app-card-button>
+  </div>
+
+  <div class="col-12 mt-3">
+  </div>
+
+  <div class="col-6">
+    <app-card-information
+      [header]="'PM2.5'"
+      [value]="pm25"
+      [maxValue]=500
+      [unit]="'µg/m³'"
+    ></app-card-information>
+  </div>
+  <div class="col-6">
+    <app-card-information
+      [header]="'Allergene (IAI)'"
+      [value]="iaql"
+      [maxValue]=12
+    ></app-card-information>
+  </div>
+
+  <div class="col-12 mt-3">
+  </div>
+
+  <div class="col-6">
+    <app-card-information
+      [header]="'Pre-filter'"
+      [value]="fltsts0"
+      [maxValue]="350"
+      [unit]="'%'"
+    ></app-card-information>
+  </div>
+  <div class="col-6">
+    <app-card-information
+      [header]="'Carbon filter'"
+      [value]="fltsts1"
+      [maxValue]="5800"
+      [unit]="'%'"
+    ></app-card-information>
+  </div>
+  <div class="col-6">
+    <app-card-information
+      [header]="'HEPA filter'"
+      [value]="fltsts2"
+      [maxValue]="2025"
+      [unit]="'%'"
+    ></app-card-information>
   </div>
 </div>
+
+
+
+
+
+
+<!--<div class="card-container">-->
+<!--  <div class="card-row">-->
+<!--    <p-card (click)="triggerSleep()" class="card-button">-->
+<!--      <ng-template pTemplate="title">Sleep</ng-template>-->
+<!--      <ng-container *ngIf="loadingStates.sleep">-->
+<!--        <p-progressSpinner></p-progressSpinner>-->
+<!--      </ng-container>-->
+<!--    </p-card>-->
+<!--    <p-card (click)="triggerTurbo()" class="card-button">-->
+<!--      <ng-template pTemplate="title">Turbo</ng-template>-->
+<!--      <ng-container *ngIf="loadingStates.turbo">-->
+<!--        <p-progressSpinner></p-progressSpinner>-->
+<!--      </ng-container>-->
+<!--    </p-card>-->
+<!--  </div>-->
+<!--  <div class="card-row">-->
+<!--    <p-card (click)="triggerModeA()" class="card-button">-->
+<!--      <ng-template pTemplate="title">Mode A</ng-template>-->
+<!--      <ng-container *ngIf="loadingStates.modeA">-->
+<!--        <p-progressSpinner></p-progressSpinner>-->
+<!--      </ng-container>-->
+<!--    </p-card>-->
+<!--    <p-card (click)="triggerModeP()" class="card-button">-->
+<!--      <ng-template pTemplate="title">Mode P</ng-template>-->
+<!--      <ng-container *ngIf="loadingStates.modeP">-->
+<!--        <p-progressSpinner></p-progressSpinner>-->
+<!--      </ng-container>-->
+<!--    </p-card>-->
+<!--  </div>-->
+<!--  <div class="card-row">-->
+<!--    <p-card (click)="triggerStart()" class="card-button">-->
+<!--      <ng-template pTemplate="title">Start</ng-template>-->
+<!--      <ng-container *ngIf="loadingStates.start">-->
+<!--        <p-progressSpinner></p-progressSpinner>-->
+<!--      </ng-container>-->
+<!--    </p-card>-->
+<!--    <p-card (click)="triggerStop()" class="card-button">-->
+<!--      <ng-template pTemplate="title">Stop</ng-template>-->
+<!--      <ng-container *ngIf="loadingStates.stop">-->
+<!--        <p-progressSpinner></p-progressSpinner>-->
+<!--      </ng-container>-->
+<!--    </p-card>-->
+<!--  </div>-->
+<!--  <div class="card-row">-->
+<!--    <p-card class="full-width">-->
+<!--      <ng-template pTemplate="title">Air Quality</ng-template>-->
+<!--      <div>-->
+<!--        <div>-->
+<!--          <span>PM2.5: </span>-->
+<!--          {{ pm25 }}/500 µg/m³-->
+<!--        </div>-->
+<!--        <p-progressBar [value]="pm25 / 5" [showValue]="false"></p-progressBar>-->
+<!--      </div>-->
+<!--      <div>-->
+<!--        <div>-->
+<!--          <span>Allergene: </span>-->
+<!--          {{ iaql }}/12-->
+<!--        </div>-->
+<!--        <p-progressBar [value]="iaql * (100 / 12)" [showValue]="false"></p-progressBar>-->
+<!--      </div>-->
+<!--    </p-card>-->
+<!--  </div>-->
+<!--</div>-->
 
 <router-outlet></router-outlet>

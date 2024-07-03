@@ -8,11 +8,13 @@ import { CardModule } from 'primeng/card';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { CommonModule } from '@angular/common';
+import {CardInformationComponent} from "./components/card-information/card-information.component";
+import {CardButtonComponent} from "./components/card-button/card-button.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ButtonModule, HttpClientModule, CardModule, ProgressSpinnerModule, ProgressBarModule, CommonModule],
+  imports: [CardInformationComponent, RouterOutlet, ButtonModule, HttpClientModule, CardModule, ProgressSpinnerModule, ProgressBarModule, CommonModule, CardButtonComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -28,6 +30,10 @@ export class AppComponent {
   };
   pm25: number = 0;
   iaql: number = 0;
+  fltsts0: number = 0;
+  fltsts1: number = 0;
+  fltsts2: number = 0;
+
 
   constructor(private http: HttpClient) {
     this.fetchStatus();
@@ -85,8 +91,12 @@ export class AppComponent {
       .pipe(switchMap(() => this.http.get<any>(this.apiUrl + 'status')))
       .subscribe(
         response => {
+          debugger;
           this.pm25 = response.pm25;
           this.iaql = response.iaql;
+          this.fltsts0 = response.fltsts0;
+          this.fltsts1 = response.fltsts1;
+          this.fltsts2 = response.fltsts2;
         },
         error => {
           console.error('GET request to /status error', error);
