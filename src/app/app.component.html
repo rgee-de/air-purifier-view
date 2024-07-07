@@ -1,4 +1,9 @@
 <div class="grid surface-ground">
+  <div class="col-12 mt-3">
+    Last update {{timestamp$ | async | timeGap}}<br>
+      Timestamp {{timestamp$ | async | date:'dd:MM HH:mm:ss'}}
+  </div>
+
   <div class="col-6">
     <app-card-button [header]="'Start'" [clickHandler]="triggerStart.bind(this)"></app-card-button>
   </div>
@@ -25,7 +30,7 @@
   <div class="col-6">
     <app-card-information
       [header]="'PM2.5'"
-      [value]="pm25"
+      [value]="(pm25$ | async) ?? 0"
       [maxValue]=500
       [unit]="'µg/m³'"
     ></app-card-information>
@@ -33,7 +38,7 @@
   <div class="col-6">
     <app-card-information
       [header]="'Allergene (IAI)'"
-      [value]="iaql"
+      [value]="(iaql$ | async) ?? 0"
       [maxValue]=12
     ></app-card-information>
   </div>
@@ -44,7 +49,7 @@
   <div class="col-6">
     <app-card-information
       [header]="'Pre-filter'"
-      [value]="fltsts0"
+      [value]="(fltsts0$ | async) ?? 0"
       [maxValue]="350"
       [unit]="'%'"
     ></app-card-information>
@@ -52,7 +57,7 @@
   <div class="col-6">
     <app-card-information
       [header]="'Carbon filter'"
-      [value]="fltsts1"
+      [value]="(fltsts1$ | async) ?? 0"
       [maxValue]="5800"
       [unit]="'%'"
     ></app-card-information>
@@ -60,7 +65,7 @@
   <div class="col-6">
     <app-card-information
       [header]="'HEPA filter'"
-      [value]="fltsts2"
+      [value]="(fltsts2$ | async) ?? 0"
       [maxValue]="2025"
       [unit]="'%'"
     ></app-card-information>
