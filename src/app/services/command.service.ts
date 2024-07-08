@@ -11,7 +11,7 @@ export class CommandService {
   constructor(private http: HttpClient) {}
 
   start() {
-    this.http.post(this.API_ENDPOINT + 'start', null).subscribe()
+    return this.http.post(this.API_ENDPOINT + 'start', null)
   }
 
   stop() {

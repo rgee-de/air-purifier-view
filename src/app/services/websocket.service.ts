@@ -4,6 +4,9 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {defaultStatusModel, StatusModel} from '../models/status.model';
 import {environment} from '../../environments/environment';
 import {HttpClient} from "@angular/common/http";
+import {Store} from "@ngrx/store";
+import {AirPurifierStatusState} from "../store/air-purifier-status.reducer";
+import {update} from "../store/air-purifier-status.action";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +18,7 @@ export class WebsocketService {
   private statusSubject$: BehaviorSubject<StatusModel> = new BehaviorSubject<StatusModel>(defaultStatusModel);
   public status$: Observable<StatusModel> = this.statusSubject$.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private store: Store<AirPurifierStatusState>) {
     this.getInitialData();
     this.connect();
   }
@@ -49,7 +52,8 @@ export class WebsocketService {
     });
   }
 
-  private onMessage(msg: StatusModel) {
-    this.statusSubject$.next(msg);
+  private onMessage(status: StatusModel) {
+    this.statusSubject$.next(status);
+    this.store.dispatch(update({status}));
   }
 }

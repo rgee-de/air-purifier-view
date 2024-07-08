@@ -14,6 +14,18 @@ import {ExtractStatusPipe} from './pipes/extract-status.pipe';
 import {StatusModel} from "./models/status.model";
 import {CommandService} from "./services/command.service";
 import {TimeGapPipe} from "./pipes/time-gap.pipe";
+import {Store} from "@ngrx/store";
+import {start} from "./store/air-purifier-control.action";
+import {
+  selectIsAllergeneMode,
+  selectIsGeneralMode,
+  selectIsOff,
+  selectIsOn,
+  selectIsSleepMode,
+  selectIsTurboMode,
+  selectPM25
+} from "./store/air-purifier-status.selector";
+import {selectIsLoadingStart} from "./store/air-purifier-control.selector";
 
 @Component({
   selector: 'app-root',
@@ -29,17 +41,33 @@ export class AppComponent {
   fltsts1$!: Observable<number>
   fltsts2$!: Observable<number>
   timestamp$!: Observable<string>
+  isTurboMode$!: Observable<boolean>
+  isSleepMode$!: Observable<boolean>
+  isGeneralMode$!: Observable<boolean>
+  isAllergeneMode$!: Observable<boolean>
+  isOff$!: Observable<boolean>
+  isOn$!: Observable<boolean>
+  isStartLoading!: Observable<boolean>
 
   constructor(
     private http: HttpClient,
     private websocketService: WebsocketService,
     private commandService: CommandService,
+    private store: Store
   ) {
     this.initVariables();
   }
 
   private initVariables() {
-    this.pm25$ = this.createStatusObservable('pm25');
+    this.isTurboMode$ = this.store.select(selectIsTurboMode);
+    this.isSleepMode$ = this.store.select(selectIsSleepMode);
+    this.isGeneralMode$ = this.store.select(selectIsGeneralMode);
+    this.isAllergeneMode$ = this.store.select(selectIsAllergeneMode);
+    this.isOn$ = this.store.select(selectIsOn);
+    this.isOff$ = this.store.select(selectIsOff);
+    this.isStartLoading = this.store.select(selectIsLoadingStart);
+
+    this.pm25$ = this.store.select(selectPM25);
     this.iaql$ = this.createStatusObservable('iaql');
     this.fltsts0$ = this.createStatusObservable('fltsts0');
     this.fltsts1$ = this.createStatusObservable('fltsts1');
@@ -75,7 +103,7 @@ export class AppComponent {
   }
 
   triggerStart() {
-    this.commandService.start();
+    this.store.dispatch(start())
   }
 
   triggerStop() {
