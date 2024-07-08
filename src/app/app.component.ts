@@ -12,10 +12,10 @@ import {CardButtonComponent} from "./components/card-button/card-button.componen
 import {WebsocketService} from "./services/websocket.service";
 import {ExtractStatusPipe} from './pipes/extract-status.pipe';
 import {StatusModel} from "./models/status.model";
-import {CommandService} from "./services/command.service";
+import {ControlService} from "./services/control.service";
 import {TimeGapPipe} from "./pipes/time-gap.pipe";
 import {Store} from "@ngrx/store";
-import {start} from "./store/air-purifier-control.action";
+import {modeA, modeP, sleep, start, turbo, stop} from "./store/air-purifier-control/air-purifier-control.action";
 import {
   selectIsAllergeneMode,
   selectIsGeneralMode,
@@ -24,8 +24,8 @@ import {
   selectIsSleepMode,
   selectIsTurboMode,
   selectPM25
-} from "./store/air-purifier-status.selector";
-import {selectIsLoadingStart} from "./store/air-purifier-control.selector";
+} from "./store/air-purifier-status/air-purifier-status.selector";
+import {selectIsLoading} from "./store/air-purifier-control/air-purifier-control.selector";
 
 @Component({
   selector: 'app-root',
@@ -47,12 +47,12 @@ export class AppComponent {
   isAllergeneMode$!: Observable<boolean>
   isOff$!: Observable<boolean>
   isOn$!: Observable<boolean>
-  isStartLoading!: Observable<boolean>
+  isStartLoading$!: Observable<boolean>
 
   constructor(
     private http: HttpClient,
     private websocketService: WebsocketService,
-    private commandService: CommandService,
+    private commandService: ControlService,
     private store: Store
   ) {
     this.initVariables();
@@ -65,7 +65,7 @@ export class AppComponent {
     this.isAllergeneMode$ = this.store.select(selectIsAllergeneMode);
     this.isOn$ = this.store.select(selectIsOn);
     this.isOff$ = this.store.select(selectIsOff);
-    this.isStartLoading = this.store.select(selectIsLoadingStart);
+    this.isStartLoading$ = this.store.select(selectIsLoading);
 
     this.pm25$ = this.store.select(selectPM25);
     this.iaql$ = this.createStatusObservable('iaql');
@@ -87,26 +87,26 @@ export class AppComponent {
 
   // Trigger methods for each action
   triggerSleep() {
-    this.commandService.sleep();
+    this.store.dispatch(sleep());
   }
 
   triggerTurbo() {
-    this.commandService.turbo();
+    this.store.dispatch(turbo());
   }
 
   triggerModeA() {
-    this.commandService.mode_a();
+    this.store.dispatch(modeA());
   }
 
   triggerModeP() {
-    this.commandService.mode_p();
+    this.store.dispatch(modeP());
   }
 
   triggerStart() {
-    this.store.dispatch(start())
+    this.store.dispatch(start());
   }
 
   triggerStop() {
-    this.commandService.stop();
+    this.store.dispatch(stop());
   }
 }

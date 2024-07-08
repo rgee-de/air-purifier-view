@@ -4,9 +4,9 @@ import {airPurifierControlFeatureKey, AirPurifierControlState} from "./air-purif
 const selectAirPurifierControlState = createFeatureSelector<AirPurifierControlState>(airPurifierControlFeatureKey);
 
 
-export const selectIsLoadingStart = createSelector(
+export const selectIsLoading = createSelector(
   selectAirPurifierControlState,
-  (state) => state.isLoadingStart
+  (state) => state.isLoading
 );
 
 

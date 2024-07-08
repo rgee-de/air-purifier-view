@@ -1,36 +1,26 @@
 <div class="grid surface-ground">
   <div class="col-12 mt-3">
-    Last update {{timestamp$ | async | timeGap}}<br>
-      Timestamp {{timestamp$ | async | date:'dd:MM HH:mm:ss'}}
-  </div>
-  <div class="col-12 mt-3">
-    is sleep {{isSleepMode$ | async}}<br>
-    is turbo: {{isTurboMode$ | async}}<br>
-    is general {{isGeneralMode$ | async}}<br>
-    is allergene: {{isAllergeneMode$ | async}}<br>
-    is on: {{isOn$ | async}}<br>
-    is off: {{isOff$ | async}}<br>
-    is start loading: {{isStartLoading | async}}
+      Timestamp {{timestamp$ | async | date:'dd.MM HH:mm:ss'}}
   </div>
 
   <div class="col-6">
-    <app-card-button [header]="'Start'" [clickHandler]="triggerStart.bind(this)"></app-card-button>
+    <app-card-button [label]="'Start'" [active$]="isOn$" [disabled$]="isOn$" [clickHandler]="triggerStart.bind(this)" [loading$]="isStartLoading$"></app-card-button>
   </div>
   <div class="col-6">
-    <app-card-button [header]="'Stop'" [clickHandler]="triggerStop.bind(this)"></app-card-button>
+    <app-card-button [label]="'Stop'" [active$]="isOff$" [disabled$]="isOff$" [clickHandler]="triggerStop.bind(this)" [loading$]="isStartLoading$"></app-card-button>
   </div>
 
   <div class="col-6">
-    <app-card-button [header]="'Sleep'" [clickHandler]="triggerSleep.bind(this)"></app-card-button>
+    <app-card-button [label]="'Sleep'" [active$]="isSleepMode$" [clickHandler]="triggerSleep.bind(this)" [loading$]="isStartLoading$"></app-card-button>
   </div>
   <div class="col-6">
-    <app-card-button [header]="'Turbo'" [clickHandler]="triggerTurbo.bind(this)"></app-card-button>
+    <app-card-button [label]="'Turbo'" [active$]="isTurboMode$" [clickHandler]="triggerTurbo.bind(this)" [loading$]="isStartLoading$"></app-card-button>
   </div>
   <div class="col-6">
-    <app-card-button [header]="'Mode A'" [clickHandler]="triggerModeA.bind(this)"></app-card-button>
+    <app-card-button [label]="'Mode A'" [active$]="isAllergeneMode$" [clickHandler]="triggerModeA.bind(this)" [loading$]="isStartLoading$"></app-card-button>
   </div>
   <div class="col-6">
-    <app-card-button [header]="'Mode P'" [clickHandler]="triggerModeP.bind(this)"></app-card-button>
+    <app-card-button [label]="'Mode P'" [active$]="isGeneralMode$" [clickHandler]="triggerModeP.bind(this)" [loading$]="isStartLoading$"></app-card-button>
   </div>
 
   <div class="col-12 mt-3">
@@ -40,7 +30,7 @@
     <app-card-information
       [header]="'PM2.5'"
       [value]="(pm25$ | async) ?? 0"
-      [maxValue]=500
+      [maxValue]="(((pm25$ | async) ?? 0) <= 50 ? 50 : 500)"
       [unit]="'µg/m³'"
     ></app-card-information>
   </div>

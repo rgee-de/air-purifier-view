@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import * as AirPurifierStatusActions from './air-purifier-status.action';
-import {defaultStatusModel, StatusModel} from "../models/status.model";
+import {defaultStatusModel, StatusModel} from "../../models/status.model";
 
 export interface AirPurifierStatusState extends StatusModel {}
 

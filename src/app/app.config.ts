@@ -4,11 +4,11 @@ import {provideRouter} from '@angular/router';
 import {routes} from './app.routes';
 import {provideHttpClient} from "@angular/common/http";
 import {provideState, provideStore} from '@ngrx/store';
-import {airPurifierControlFeatureKey, airPurifierControlReducer} from "./store/air-purifier-control.reducer";
+import {airPurifierControlFeatureKey, airPurifierControlReducer} from "./store/air-purifier-control/air-purifier-control.reducer";
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import {airPurifierStatusFeatureKey, airPurifierStatusReducer} from "./store/air-purifier-status.reducer";
+import {airPurifierStatusFeatureKey, airPurifierStatusReducer} from "./store/air-purifier-status/air-purifier-status.reducer";
 import { provideEffects } from '@ngrx/effects';
-import {AirPurifierControlEffects} from "./store/air-purifier-control.effects";
+import {AirPurifierControlEffects} from "./store/air-purifier-control/air-purifier-control.effects";
 
 export const appConfig: ApplicationConfig = {
   providers: [

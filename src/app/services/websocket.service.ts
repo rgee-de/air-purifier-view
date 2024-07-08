@@ -5,8 +5,8 @@ import {defaultStatusModel, StatusModel} from '../models/status.model';
 import {environment} from '../../environments/environment';
 import {HttpClient} from "@angular/common/http";
 import {Store} from "@ngrx/store";
-import {AirPurifierStatusState} from "../store/air-purifier-status.reducer";
-import {update} from "../store/air-purifier-status.action";
+import {AirPurifierStatusState} from "../store/air-purifier-status/air-purifier-status.reducer";
+import {update} from "../store/air-purifier-status/air-purifier-status.action";
 
 @Injectable({
   providedIn: 'root'
