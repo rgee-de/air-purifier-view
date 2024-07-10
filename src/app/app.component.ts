@@ -1,8 +1,6 @@
 import {Component} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {ButtonModule} from 'primeng/button';
-import {HttpClient} from '@angular/common/http';
-import {map, Observable} from 'rxjs';
 import {CardModule} from 'primeng/card';
 import {ProgressSpinnerModule} from 'primeng/progressspinner';
 import {ProgressBarModule} from 'primeng/progressbar';
@@ -11,102 +9,96 @@ import {CardInformationComponent} from "./components/card-information/card-infor
 import {CardButtonComponent} from "./components/card-button/card-button.component";
 import {WebsocketService} from "./services/websocket.service";
 import {ExtractStatusPipe} from './pipes/extract-status.pipe';
-import {StatusModel} from "./models/status.model";
-import {ControlService} from "./services/control.service";
 import {TimeGapPipe} from "./pipes/time-gap.pipe";
 import {Store} from "@ngrx/store";
-import {modeA, modeP, sleep, start, turbo, stop} from "./store/air-purifier-control/air-purifier-control.action";
+import {modeA, modeP, sleep, start, stop, turbo} from "./store/air-purifier-control/air-purifier-control.action";
 import {
+  selectFltsts0,
+  selectFltsts1,
+  selectFltsts2,
+  selectIaql,
   selectIsAllergeneMode,
+  selectIsFunctionButtonDeactivated,
   selectIsGeneralMode,
   selectIsOff,
   selectIsOn,
   selectIsSleepMode,
+  selectIsStartButtonDeactivated,
+  selectIsStopButtonDeactivated,
   selectIsTurboMode,
-  selectPM25
+  selectPm25,
+  selectTimestamp
 } from "./store/air-purifier-status/air-purifier-status.selector";
-import {selectIsLoading} from "./store/air-purifier-control/air-purifier-control.selector";
+import {
+  selectIsModeALoading,
+  selectIsModePLoading,
+  selectIsSleepLoading,
+  selectIsStartLoading,
+  selectIsStopLoading,
+  selectIsTurboLoading
+} from "./store/air-purifier-control/air-purifier-control.selector";
+import {ChipModule} from "primeng/chip";
+import {TagModule} from "primeng/tag";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CardInformationComponent, RouterOutlet, ButtonModule, CardModule, ProgressSpinnerModule, ProgressBarModule, CommonModule, CardButtonComponent, ExtractStatusPipe, TimeGapPipe],
+  imports: [CardInformationComponent, RouterOutlet, ButtonModule, CardModule, ProgressSpinnerModule, ProgressBarModule, CommonModule, CardButtonComponent, ExtractStatusPipe, TimeGapPipe, ChipModule, TagModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  pm25$!: Observable<number>
-  iaql$!: Observable<number>
-  fltsts0$!: Observable<number>
-  fltsts1$!: Observable<number>
-  fltsts2$!: Observable<number>
-  timestamp$!: Observable<string>
-  isTurboMode$!: Observable<boolean>
-  isSleepMode$!: Observable<boolean>
-  isGeneralMode$!: Observable<boolean>
-  isAllergeneMode$!: Observable<boolean>
-  isOff$!: Observable<boolean>
-  isOn$!: Observable<boolean>
-  isStartLoading$!: Observable<boolean>
+  // Status Observables
+  status$ = {
+    isTurboMode: this.store.select(selectIsTurboMode),
+    isSleepMode: this.store.select(selectIsSleepMode),
+    isGeneralMode: this.store.select(selectIsGeneralMode),
+    isAllergeneMode: this.store.select(selectIsAllergeneMode),
+    isOn: this.store.select(selectIsOn),
+    isOff: this.store.select(selectIsOff),
+  };
+
+  // Loading Observables
+  loading$ = {
+    isStartLoading: this.store.select(selectIsStartLoading),
+    isStopLoading: this.store.select(selectIsStopLoading),
+    isSleepLoading: this.store.select(selectIsSleepLoading),
+    isTurboLoading: this.store.select(selectIsTurboLoading),
+    isModeALoading: this.store.select(selectIsModeALoading),
+    isModePLoading: this.store.select(selectIsModePLoading),
+  };
+
+  // Button Deactivation Observables
+  buttonDeactivation$ = {
+    isStartButtonDeactivated: this.store.select(selectIsStartButtonDeactivated),
+    isStopButtonDeactivated: this.store.select(selectIsStopButtonDeactivated),
+    isFunctionButtonDeactivated: this.store.select(selectIsFunctionButtonDeactivated),
+  };
+
+  // Sensor Observables
+  sensorData$ = {
+    pm25: this.store.select(selectPm25),
+    iaql: this.store.select(selectIaql),
+    fltsts0: this.store.select(selectFltsts0),
+    fltsts1: this.store.select(selectFltsts1),
+    fltsts2: this.store.select(selectFltsts2),
+    timestamp: this.store.select(selectTimestamp),
+  };
 
   constructor(
-    private http: HttpClient,
     private websocketService: WebsocketService,
-    private commandService: ControlService,
     private store: Store
-  ) {
-    this.initVariables();
-  }
+  ) {}
 
-  private initVariables() {
-    this.isTurboMode$ = this.store.select(selectIsTurboMode);
-    this.isSleepMode$ = this.store.select(selectIsSleepMode);
-    this.isGeneralMode$ = this.store.select(selectIsGeneralMode);
-    this.isAllergeneMode$ = this.store.select(selectIsAllergeneMode);
-    this.isOn$ = this.store.select(selectIsOn);
-    this.isOff$ = this.store.select(selectIsOff);
-    this.isStartLoading$ = this.store.select(selectIsLoading);
-
-    this.pm25$ = this.store.select(selectPM25);
-    this.iaql$ = this.createStatusObservable('iaql');
-    this.fltsts0$ = this.createStatusObservable('fltsts0');
-    this.fltsts1$ = this.createStatusObservable('fltsts1');
-    this.fltsts2$ = this.createStatusObservable('fltsts2');
-    this.timestamp$ = this.createStatusObservable('timestamp');
-  }
-
-  private createStatusObservable(key: keyof StatusModel): Observable<any> {
-    return this.websocketService.getStatus().pipe(
-      map((status: StatusModel) => {
-        return status ? status[key] : 0;
-      })
-    );
-  }
-
-
-
-  // Trigger methods for each action
-  triggerSleep() {
-    this.store.dispatch(sleep());
-  }
-
-  triggerTurbo() {
-    this.store.dispatch(turbo());
-  }
-
-  triggerModeA() {
-    this.store.dispatch(modeA());
-  }
-
-  triggerModeP() {
-    this.store.dispatch(modeP());
-  }
-
-  triggerStart() {
-    this.store.dispatch(start());
-  }
-
-  triggerStop() {
-    this.store.dispatch(stop());
+  triggerAction(action: 'sleep' | 'turbo' | 'modeA' | 'modeP' | 'start' | 'stop') {
+    const actionMap = {
+      sleep: sleep(),
+      turbo: turbo(),
+      modeA: modeA(),
+      modeP: modeP(),
+      start: start(),
+      stop: stop()
+    };
+    this.store.dispatch(actionMap[action]);
   }
 }

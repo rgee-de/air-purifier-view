@@ -60,7 +60,7 @@ export const defaultStatusModel: StatusModel = {
   dt: 0,
   dtrs: 0,
   mode: '',
-  pm25: 10,
+  pm25: 0,
   iaql: 0,
   aqit: 0,
   aqit_ext: 0,

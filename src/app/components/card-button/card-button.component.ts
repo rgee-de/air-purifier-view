@@ -16,6 +16,8 @@ export class CardButtonComponent {
   @Input() label = '';
   @Input() active$?: Observable<boolean>;
   @Input() disabled$?: Observable<boolean>;
-  @Input() clickHandler = () => {};
   @Input() loading$?: Observable<boolean>;
+
+  @Input() clickHandler = () => {
+  };
 }

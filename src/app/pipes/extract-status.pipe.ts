@@ -1,5 +1,5 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { StatusModel } from '../models/status.model';
+import {Pipe, PipeTransform} from '@angular/core';
+import {StatusModel} from '../models/status.model';
 
 type StatusModelValue = StatusModel[keyof StatusModel];
 

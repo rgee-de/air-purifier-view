@@ -1,143 +1,109 @@
-<div class="grid surface-ground">
-  <div class="col-12 mt-3">
-      Timestamp {{timestamp$ | async | date:'dd.MM HH:mm:ss'}}
+<div class="grid surface-ground full-height">
+  <div class="col-6">
+    <app-card-button
+      [active$]="status$.isOn"
+      [clickHandler]="triggerAction.bind(this, 'start')"
+      [disabled$]="buttonDeactivation$.isStartButtonDeactivated"
+      [label]="'Start'"
+      [loading$]="loading$.isStartLoading">
+    </app-card-button>
+  </div>
+  <div class="col-6">
+    <app-card-button
+      [active$]="status$.isOff"
+      [clickHandler]="triggerAction.bind(this, 'stop')"
+      [disabled$]="buttonDeactivation$.isStopButtonDeactivated"
+      [label]="'Stop'"
+      [loading$]="loading$.isStopLoading">
+    </app-card-button>
   </div>
 
   <div class="col-6">
-    <app-card-button [label]="'Start'" [active$]="isOn$" [disabled$]="isOn$" [clickHandler]="triggerStart.bind(this)" [loading$]="isStartLoading$"></app-card-button>
+    <app-card-button
+      [active$]="status$.isSleepMode"
+      [clickHandler]="triggerAction.bind(this, 'sleep')"
+      [disabled$]="buttonDeactivation$.isFunctionButtonDeactivated"
+      [label]="'Sleep'"
+      [loading$]="loading$.isSleepLoading">
+    </app-card-button>
   </div>
   <div class="col-6">
-    <app-card-button [label]="'Stop'" [active$]="isOff$" [disabled$]="isOff$" [clickHandler]="triggerStop.bind(this)" [loading$]="isStartLoading$"></app-card-button>
+    <app-card-button
+      [active$]="status$.isTurboMode"
+      [clickHandler]="triggerAction.bind(this, 'turbo')"
+      [disabled$]="buttonDeactivation$.isFunctionButtonDeactivated"
+      [label]="'Turbo'"
+      [loading$]="loading$.isTurboLoading">
+    </app-card-button>
+  </div>
+  <div class="col-6">
+    <app-card-button
+      [active$]="status$.isAllergeneMode"
+      [clickHandler]="triggerAction.bind(this, 'modeA')"
+      [disabled$]="buttonDeactivation$.isFunctionButtonDeactivated"
+      [label]="'Mode A'"
+      [loading$]="loading$.isModeALoading">
+    </app-card-button>
+  </div>
+  <div class="col-6">
+    <app-card-button
+      [active$]="status$.isGeneralMode"
+      [clickHandler]="triggerAction.bind(this, 'modeP')"
+      [disabled$]="buttonDeactivation$.isFunctionButtonDeactivated"
+      [label]="'Mode P'"
+      [loading$]="loading$.isModePLoading">
+    </app-card-button>
   </div>
 
-  <div class="col-6">
-    <app-card-button [label]="'Sleep'" [active$]="isSleepMode$" [clickHandler]="triggerSleep.bind(this)" [loading$]="isStartLoading$"></app-card-button>
-  </div>
-  <div class="col-6">
-    <app-card-button [label]="'Turbo'" [active$]="isTurboMode$" [clickHandler]="triggerTurbo.bind(this)" [loading$]="isStartLoading$"></app-card-button>
-  </div>
-  <div class="col-6">
-    <app-card-button [label]="'Mode A'" [active$]="isAllergeneMode$" [clickHandler]="triggerModeA.bind(this)" [loading$]="isStartLoading$"></app-card-button>
-  </div>
-  <div class="col-6">
-    <app-card-button [label]="'Mode P'" [active$]="isGeneralMode$" [clickHandler]="triggerModeP.bind(this)" [loading$]="isStartLoading$"></app-card-button>
-  </div>
+  <div class="col-12 mt-1"></div>
 
-  <div class="col-12 mt-3">
+  <div class="col-12 mt-3 flex justify-content-end">
+    <p-tag value="Last Update: {{ sensorData$.timestamp | async | date:'HH:mm:ss' }}"/>
+    <!--    <p-tag severity="secondary" value="{{ sensorData$.timestamp | async | date:'dd.MM.YYYY' }}"/>-->
   </div>
 
   <div class="col-6">
     <app-card-information
       [header]="'PM2.5'"
-      [value]="(pm25$ | async) ?? 0"
-      [maxValue]="(((pm25$ | async) ?? 0) <= 50 ? 50 : 500)"
+      [maxValue]="(((sensorData$.pm25 | async) ?? 0) <= 50 ? 50 : 500)"
       [unit]="'µg/m³'"
+      [value]="(sensorData$.pm25 | async) ?? 0"
     ></app-card-information>
   </div>
   <div class="col-6">
     <app-card-information
-      [header]="'Allergene (IAI)'"
-      [value]="(iaql$ | async) ?? 0"
-      [maxValue]=12
+      [header]="'Allergen (IAI)'"
+      [maxValue]="12"
+      [value]="(sensorData$.iaql | async) ?? 0"
     ></app-card-information>
   </div>
 
-  <div class="col-12 mt-3">
-  </div>
+  <div class="col-12 mt-1"></div>
 
-  <div class="col-6">
-    <app-card-information
-      [header]="'Pre-filter'"
-      [value]="(fltsts0$ | async) ?? 0"
-      [maxValue]="350"
-      [unit]="'%'"
-    ></app-card-information>
-  </div>
-  <div class="col-6">
-    <app-card-information
-      [header]="'Carbon filter'"
-      [value]="(fltsts1$ | async) ?? 0"
-      [maxValue]="5800"
-      [unit]="'%'"
-    ></app-card-information>
-  </div>
-  <div class="col-6">
-    <app-card-information
-      [header]="'HEPA filter'"
-      [value]="(fltsts2$ | async) ?? 0"
-      [maxValue]="2025"
-      [unit]="'%'"
-    ></app-card-information>
-  </div>
+<!--  <div class="col-6">-->
+<!--    <app-card-information-->
+<!--      [header]="'Pre-filter'"-->
+<!--      [maxValue]="350"-->
+<!--      [unit]="'%'"-->
+<!--      [value]="(sensorData$.fltsts0 | async) ?? 0"-->
+<!--    ></app-card-information>-->
+<!--  </div>-->
+<!--  <div class="col-6">-->
+<!--    <app-card-information-->
+<!--      [header]="'Carbon filter'"-->
+<!--      [maxValue]="5800"-->
+<!--      [unit]="'%'"-->
+<!--      [value]="(sensorData$.fltsts1 | async) ?? 0"-->
+<!--    ></app-card-information>-->
+<!--  </div>-->
+<!--  <div class="col-6">-->
+<!--    <app-card-information-->
+<!--      [header]="'HEPA filter'"-->
+<!--      [maxValue]="2025"-->
+<!--      [unit]="'%'"-->
+<!--      [value]="(sensorData$.fltsts2 | async) ?? 0"-->
+<!--    ></app-card-information>-->
+<!--  </div>-->
 </div>
-
-
-
-
-
-
-<!--<div class="card-container">-->
-<!--  <div class="card-row">-->
-<!--    <p-card (click)="triggerSleep()" class="card-button">-->
-<!--      <ng-template pTemplate="title">Sleep</ng-template>-->
-<!--      <ng-container *ngIf="loadingStates.sleep">-->
-<!--        <p-progressSpinner></p-progressSpinner>-->
-<!--      </ng-container>-->
-<!--    </p-card>-->
-<!--    <p-card (click)="triggerTurbo()" class="card-button">-->
-<!--      <ng-template pTemplate="title">Turbo</ng-template>-->
-<!--      <ng-container *ngIf="loadingStates.turbo">-->
-<!--        <p-progressSpinner></p-progressSpinner>-->
-<!--      </ng-container>-->
-<!--    </p-card>-->
-<!--  </div>-->
-<!--  <div class="card-row">-->
-<!--    <p-card (click)="triggerModeA()" class="card-button">-->
-<!--      <ng-template pTemplate="title">Mode A</ng-template>-->
-<!--      <ng-container *ngIf="loadingStates.modeA">-->
-<!--        <p-progressSpinner></p-progressSpinner>-->
-<!--      </ng-container>-->
-<!--    </p-card>-->
-<!--    <p-card (click)="triggerModeP()" class="card-button">-->
-<!--      <ng-template pTemplate="title">Mode P</ng-template>-->
-<!--      <ng-container *ngIf="loadingStates.modeP">-->
-<!--        <p-progressSpinner></p-progressSpinner>-->
-<!--      </ng-container>-->
-<!--    </p-card>-->
-<!--  </div>-->
-<!--  <div class="card-row">-->
-<!--    <p-card (click)="triggerStart()" class="card-button">-->
-<!--      <ng-template pTemplate="title">Start</ng-template>-->
-<!--      <ng-container *ngIf="loadingStates.start">-->
-<!--        <p-progressSpinner></p-progressSpinner>-->
-<!--      </ng-container>-->
-<!--    </p-card>-->
-<!--    <p-card (click)="triggerStop()" class="card-button">-->
-<!--      <ng-template pTemplate="title">Stop</ng-template>-->
-<!--      <ng-container *ngIf="loadingStates.stop">-->
-<!--        <p-progressSpinner></p-progressSpinner>-->
-<!--      </ng-container>-->
-<!--    </p-card>-->
-<!--  </div>-->
-<!--  <div class="card-row">-->
-<!--    <p-card class="full-width">-->
-<!--      <ng-template pTemplate="title">Air Quality</ng-template>-->
-<!--      <div>-->
-<!--        <div>-->
-<!--          <span>PM2.5: </span>-->
-<!--          {{ pm25 }}/500 µg/m³-->
-<!--        </div>-->
-<!--        <p-progressBar [value]="pm25 / 5" [showValue]="false"></p-progressBar>-->
-<!--      </div>-->
-<!--      <div>-->
-<!--        <div>-->
-<!--          <span>Allergene: </span>-->
-<!--          {{ iaql }}/12-->
-<!--        </div>-->
-<!--        <p-progressBar [value]="iaql * (100 / 12)" [showValue]="false"></p-progressBar>-->
-<!--      </div>-->
-<!--    </p-card>-->
-<!--  </div>-->
-<!--</div>-->
 
 <router-outlet></router-outlet>

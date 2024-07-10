@@ -8,7 +8,8 @@ import {HttpClient} from "@angular/common/http";
 export class ControlService {
   private readonly API_ENDPOINT = environment.apiEndpoint;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   start() {
     return this.http.post(this.API_ENDPOINT + 'start', null);

@@ -1,27 +1,13 @@
-import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { EMPTY, Observable } from 'rxjs';
-import { map, exhaustMap, catchError } from 'rxjs/operators';
-import { ControlService } from "../../services/control.service";
+import {Injectable} from '@angular/core';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
+import {EMPTY, Observable} from 'rxjs';
+import {catchError, exhaustMap, map} from 'rxjs/operators';
+import {ControlService} from '../../services/control.service';
 import * as AirPurifierActions from './air-purifier-control.action';
-import {Action, ActionCreator} from '@ngrx/store';
+import {ActionCreator} from '@ngrx/store';
 
 @Injectable()
 export class AirPurifierControlEffects {
-
-  private createEffectForAction(
-    actionType: ActionCreator<string, () => Action<string>>,
-    controlMethod: () => Observable<any>
-  ) {
-    return createEffect(() => this.actions$.pipe(
-      ofType(actionType),
-      exhaustMap(() => controlMethod()
-        .pipe(
-          map(() => (AirPurifierActions.setLoading({loading: false}))),
-          catchError(() => EMPTY)
-        ))
-    ));
-  }
 
   start$ = this.createEffectForAction(AirPurifierActions.start, this.controlService.start.bind(this.controlService));
   stop$ = this.createEffectForAction(AirPurifierActions.stop, this.controlService.stop.bind(this.controlService));
@@ -33,5 +19,22 @@ export class AirPurifierControlEffects {
   constructor(
     private actions$: Actions,
     private controlService: ControlService
-  ) {}
+  ) {
+  }
+
+  private createEffectForAction(
+    actionType: ActionCreator<string>,
+    controlMethod: () => Observable<any>
+  ) {
+    return createEffect(() => this.actions$.pipe(
+      ofType(actionType),
+      exhaustMap(() => {
+        const actionTypeString = actionType.type;
+        return controlMethod().pipe(
+          map(() => AirPurifierActions.setLoading({actionType: actionTypeString, loading: false})),
+          catchError(() => EMPTY)
+        );
+      })
+    ));
+  }
 }

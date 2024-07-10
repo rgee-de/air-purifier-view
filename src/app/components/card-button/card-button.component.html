@@ -1,8 +1,8 @@
 <p-button
-  [label]="label"
-  [severity]="(active$ | async) ? 'help' : 'primary'"
-  [disabled]="disabled$ | async"
   (onClick)="clickHandler()"
-  [outlined]="true"
+  [disabled]="disabled$ | async"
+  [label]="label"
   [loading]="loading$ | async"
+  [outlined]="true"
+  [severity]="(active$ | async) ? 'help' : 'primary'"
 ></p-button>
