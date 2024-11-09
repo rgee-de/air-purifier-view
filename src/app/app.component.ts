@@ -39,11 +39,14 @@ import {
 } from "./store/air-purifier-control/air-purifier-control.selector";
 import {ChipModule} from "primeng/chip";
 import {TagModule} from "primeng/tag";
+import {
+  CardInformationWarningComponent
+} from "./components/card-information-warning/card-information-warning.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CardInformationComponent, RouterOutlet, ButtonModule, CardModule, ProgressSpinnerModule, ProgressBarModule, CommonModule, CardButtonComponent, ExtractStatusPipe, TimeGapPipe, ChipModule, TagModule],
+  imports: [CardInformationComponent, RouterOutlet, ButtonModule, CardModule, ProgressSpinnerModule, ProgressBarModule, CommonModule, CardButtonComponent, ExtractStatusPipe, TimeGapPipe, ChipModule, TagModule, CardInformationWarningComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

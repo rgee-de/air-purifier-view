@@ -81,29 +81,29 @@
   <div class="col-12 mt-1"></div>
 
   <div class="col-6">
-    <app-card-information
+    <app-card-information-warning
       [header]="'Pre-filter'"
       [maxValue]="350"
-      [unit]="'%'"
+      [unit]="'h'"
       [value]="(sensorData$.fltsts0 | async) ?? 0"
-    ></app-card-information>
+    ></app-card-information-warning>
   </div>
-<!--  <div class="col-6">-->
-<!--    <app-card-information-->
-<!--      [header]="'Carbon filter'"-->
-<!--      [maxValue]="5800"-->
-<!--      [unit]="'%'"-->
-<!--      [value]="(sensorData$.fltsts1 | async) ?? 0"-->
-<!--    ></app-card-information>-->
-<!--  </div>-->
-<!--  <div class="col-6">-->
-<!--    <app-card-information-->
-<!--      [header]="'HEPA filter'"-->
-<!--      [maxValue]="2025"-->
-<!--      [unit]="'%'"-->
-<!--      [value]="(sensorData$.fltsts2 | async) ?? 0"-->
-<!--    ></app-card-information>-->
-<!--  </div>-->
+  <div class="col-6">
+    <app-card-information-warning
+      [header]="'Carbon filter'"
+      [maxValue]="4800"
+      [unit]="'h'"
+      [value]="(sensorData$.fltsts1 | async) ?? 0"
+    ></app-card-information-warning>
+  </div>
+  <div class="col-6">
+    <app-card-information-warning
+      [header]="'HEPA filter'"
+      [maxValue]="2400"
+      [unit]="'h'"
+      [value]="(sensorData$.fltsts2 | async) ?? 0"
+    ></app-card-information-warning>
+  </div>
 </div>
 
 <router-outlet></router-outlet>

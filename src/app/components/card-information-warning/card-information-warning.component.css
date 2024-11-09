@@ -1,0 +1,11 @@
+:host ::ng-deep .change .p-progressbar .p-progressbar-value {
+  background: var(--red-500);
+}
+
+:host ::ng-deep .warning .p-progressbar .p-progressbar-value {
+  background: var(--orange-500);
+}
+
+:host ::ng-deep .good .p-progressbar .p-progressbar-value {
+  background: var(--primary-500);
+}

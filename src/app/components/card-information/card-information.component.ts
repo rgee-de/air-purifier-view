@@ -12,7 +12,16 @@ import {NgIf} from "@angular/common";
 })
 export class CardInformationComponent {
   @Input() header = '';
-  @Input() value = 0;
   @Input() maxValue?: number;
   @Input() unit = '';
+  private _value = 0;
+
+  @Input()
+  set value(val: number) {
+    this._value = val;
+  }
+
+  get value() {
+    return this._value;
+  }
 }
