@@ -16,12 +16,12 @@ export class CardInformationComponent {
   @Input() unit = '';
   private _value = 0;
 
+  get value() {
+    return this._value;
+  }
+
   @Input()
   set value(val: number) {
     this._value = val;
-  }
-
-  get value() {
-    return this._value;
   }
 }

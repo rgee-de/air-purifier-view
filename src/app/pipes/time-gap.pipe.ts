@@ -11,7 +11,7 @@ export class TimeGapPipe implements PipeTransform {
       return 'N/A';  // Return a default value if timestamp is null or undefined
     }
 
-    const now = new Date().getTime();
+    const now = Date.now();
     const then = new Date(timestamp).getTime();
     const diffInSeconds = Math.floor((now - then) / 1000);
 

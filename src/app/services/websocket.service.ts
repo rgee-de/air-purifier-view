@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {webSocket, WebSocketSubject} from 'rxjs/webSocket';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import {defaultStatusModel, StatusModel} from '../models/status.model';
 import {environment} from '../../environments/environment';
 import {HttpClient} from "@angular/common/http";
@@ -15,22 +15,11 @@ export class WebsocketService {
   private socket$!: WebSocketSubject<any>;
   private readonly WS_ENDPOINT = environment.wsEndpoint;
   private readonly API_ENDPOINT = environment.apiEndpoint;
-  private statusSubject$: BehaviorSubject<StatusModel> = new BehaviorSubject<StatusModel>(defaultStatusModel);
-  public status$: Observable<StatusModel> = this.statusSubject$.asObservable();
+  private readonly statusSubject$: BehaviorSubject<StatusModel> = new BehaviorSubject<StatusModel>(defaultStatusModel);
 
-  constructor(private http: HttpClient, private store: Store<AirPurifierStatusState>) {
+  constructor(private readonly http: HttpClient, private readonly store: Store<AirPurifierStatusState>) {
     this.getInitialData();
     this.connect();
-  }
-
-  disconnect() {
-    if (this.socket$) {
-      this.socket$.complete();
-    }
-  }
-
-  getStatus(): Observable<StatusModel> {
-    return this.status$;
   }
 
   private getInitialData() {

@@ -1,4 +1,4 @@
-import {ApplicationConfig, isDevMode, provideZoneChangeDetection} from '@angular/core';
+import {APP_INITIALIZER, ApplicationConfig, inject, isDevMode, provideZoneChangeDetection} from '@angular/core';
 import {provideRouter} from '@angular/router';
 
 import {routes} from './app.routes';
@@ -15,6 +15,14 @@ import {
 } from "./store/air-purifier-status/air-purifier-status.reducer";
 import {provideEffects} from '@ngrx/effects';
 import {AirPurifierControlEffects} from "./store/air-purifier-control/air-purifier-control.effects";
+import {WebsocketService} from "./services/websocket.service";
+
+export const initWebsocket = () => {
+  return () => {
+    inject(WebsocketService); // Service wird hier erzeugt
+    return Promise.resolve();
+  };
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,6 +33,12 @@ export const appConfig: ApplicationConfig = {
     provideState({name: airPurifierControlFeatureKey, reducer: airPurifierControlReducer}),
     provideState({name: airPurifierStatusFeatureKey, reducer: airPurifierStatusReducer}),
     provideStoreDevtools({maxAge: 25, logOnly: !isDevMode()}),
-    provideEffects(AirPurifierControlEffects)
+    provideEffects(AirPurifierControlEffects),
+
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initWebsocket,
+      multi: true
+    }
   ]
 };

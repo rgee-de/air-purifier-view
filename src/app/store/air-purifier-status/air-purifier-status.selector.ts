@@ -80,7 +80,7 @@ export const selectIsStartButtonDeactivated = createSelector(
   selectIsOn,
   selectIsAnyLoading,
   // (isOn, isAnyLoading) => isOn || isAnyLoading
-  (isOn, isAnyLoading) => isAnyLoading
+  (_, isAnyLoading) => isAnyLoading
 );
 
 export const selectIsStopButtonDeactivated = createSelector(

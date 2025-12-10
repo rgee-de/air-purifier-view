@@ -7,9 +7,6 @@ import {ProgressBarModule} from 'primeng/progressbar';
 import {CommonModule} from '@angular/common';
 import {CardInformationComponent} from "./components/card-information/card-information.component";
 import {CardButtonComponent} from "./components/card-button/card-button.component";
-import {WebsocketService} from "./services/websocket.service";
-import {ExtractStatusPipe} from './pipes/extract-status.pipe';
-import {TimeGapPipe} from "./pipes/time-gap.pipe";
 import {Store} from "@ngrx/store";
 import {modeA, modeP, sleep, start, stop, turbo} from "./store/air-purifier-control/air-purifier-control.action";
 import {
@@ -46,7 +43,7 @@ import {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CardInformationComponent, RouterOutlet, ButtonModule, CardModule, ProgressSpinnerModule, ProgressBarModule, CommonModule, CardButtonComponent, ExtractStatusPipe, TimeGapPipe, ChipModule, TagModule, CardInformationWarningComponent],
+  imports: [CardInformationComponent, RouterOutlet, ButtonModule, CardModule, ProgressSpinnerModule, ProgressBarModule, CommonModule, CardButtonComponent, ChipModule, TagModule, CardInformationWarningComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -89,9 +86,9 @@ export class AppComponent {
   };
 
   constructor(
-    private readonly websocketService: WebsocketService,
     private readonly store: Store
-  ) {}
+  ) {
+  }
 
   triggerAction(action: 'sleep' | 'turbo' | 'modeA' | 'modeP' | 'start' | 'stop') {
     const actionMap = {

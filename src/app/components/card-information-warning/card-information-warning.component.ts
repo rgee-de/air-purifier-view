@@ -20,14 +20,14 @@ export class CardInformationWarningComponent extends CardInformationComponent {
 
   progressClass = 'good';
 
+  override get value() {
+    return super.value;
+  }
+
   @Input()
   override set value(val: number) {
     super.value = val;
     this.progressClass = this.calculateProgressClass();
-  }
-
-  override get value() {
-    return super.value;
   }
 
   private calculateProgressClass(): string {

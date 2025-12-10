@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { CardInformationWarningComponent } from './card-information-warning.component';
+import {CardInformationWarningComponent} from './card-information-warning.component';
 
 describe('CardInformationWarningComponent', () => {
   let component: CardInformationWarningComponent;
@@ -10,7 +10,7 @@ describe('CardInformationWarningComponent', () => {
     await TestBed.configureTestingModule({
       imports: [CardInformationWarningComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(CardInformationWarningComponent);
     component = fixture.componentInstance;

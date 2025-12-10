@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {CardModule} from "primeng/card";
-import {AsyncPipe, NgClass, NgIf} from "@angular/common";
+import {AsyncPipe} from "@angular/common";
 import {ProgressBarModule} from "primeng/progressbar";
 import {ButtonModule} from "primeng/button";
 import {Observable} from "rxjs";
@@ -8,7 +8,7 @@ import {Observable} from "rxjs";
 @Component({
   selector: 'app-card-button',
   standalone: true,
-  imports: [CardModule, NgIf, ProgressBarModule, ButtonModule, NgClass, AsyncPipe],
+  imports: [CardModule, ProgressBarModule, ButtonModule, AsyncPipe],
   templateUrl: './card-button.component.html',
   styleUrl: './card-button.component.css'
 })
