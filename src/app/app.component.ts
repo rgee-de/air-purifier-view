@@ -89,8 +89,8 @@ export class AppComponent {
   };
 
   constructor(
-    private websocketService: WebsocketService,
-    private store: Store
+    private readonly websocketService: WebsocketService,
+    private readonly store: Store
   ) {}
 
   triggerAction(action: 'sleep' | 'turbo' | 'modeA' | 'modeP' | 'start' | 'stop') {

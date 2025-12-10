@@ -1,0 +1,8 @@
+services:
+  air-purfier-view:
+    image: rgee/air-purfier-view:arm64-latest
+    container_name: air-purfier-view
+    restart: unless-stopped
+    pull_policy: always
+    ports:
+      - "5000:80"
