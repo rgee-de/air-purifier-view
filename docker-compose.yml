@@ -1,7 +1,7 @@
 services:
-  air-purfier-view:
-    image: rgee/air-purfier-view:arm64-latest
-    container_name: air-purfier-view
+  air-purifier-view:
+    image: rgee/air-purifier-view:arm64-latest
+    container_name: air-purifier-view
     restart: unless-stopped
     pull_policy: always
     ports:
