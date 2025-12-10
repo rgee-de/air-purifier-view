@@ -1,7 +1,7 @@
 <p-card [header]=header>
   <div class="flex align-items-center">
-    <p-progressBar [ngClass]="progressClass" [showValue]="false"
-                   [value]="value * (100 / (maxValue ?? 100))" class="mr-2 flex-grow-1"></p-progressBar>
+    <p-progressBar [showValue]="false" [value]="value * (100 / (maxValue ?? 100))"
+                   class="mr-2 flex-grow-1" [ngClass]="progressClass"></p-progressBar>
     <div class="mb-1">
       <span class="value">{{ value }}</span>
       <span *ngIf="maxValue==12" class="max-value">/{{ maxValue }}</span>
