@@ -8,9 +8,6 @@ easy deployment.
 - [Requirements](#requirements)
 - [Setup and Configuration](#setup-and-configuration)
   - [Environment Variables](#environment-variables)
-  - [Running the Docker Container](#running-the-docker-container)
-    - [PowerShell Script](#powershell-script)
-    - [Bash Script](#bash-script)
   - [Running the Application](#running-the-application)
 - [Angular CLI](#angular-cli)
   - [Development Server](#development-server)
@@ -33,28 +30,6 @@ Change the environment.*.ts files in _src/environments_ directory to configure t
 - production: Flag to set build to production,
 - wsEndpoint: Backend Websocket-Endpoint e.g.: 'ws://192.168.20.47:8000/ws', 
 - apiEndpoint: Backend API-Endpoint
-
-### Running the Docker Container
-
-To deploy the backend in a Docker container, use the provided scripts.
-
-#### PowerShell Script
-
-Run the following command in PowerShell to deploy the container:
-
-```powershell
-cd scripts
-.\deploy-container.ps1
-```
-
-#### Bash Script
-
-Run the following command in a Unix-like terminal to deploy the container:
-
-```shell
-cd scripts
-.\deploy-container.sh
-```
 
 ### Running the Application
 
